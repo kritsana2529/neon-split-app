@@ -2,34 +2,206 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>แอปหารค่าเครื่องดื่ม</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡️ NEON SPLIT ⚡️</title>
+    
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     
     <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-        input { padding: 5px; margin: 5px 0; width: 100px; }
-        button { padding: 10px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; margin-top: 15px;}
-        .result-box { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 8px; }
+        :root {
+            --bg-color: #0d0d0d;
+            --text-color: #ffffff;
+            --main-border: 3px solid #000000;
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
+            --neon-green: #0ff00;
+            --block-shadow: 6px 6px 0px #000000;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            border: var(--main-border);
+            background-color: #1a1a1a;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 10px 10px 0px var(--neon-pink);
+        }
+
+        h2.main-title {
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: var(--neon-cyan);
+            text-shadow: 2px 2px 0 var(--neon-pink);
+            border-bottom: 3px solid var(--neon-cyan);
+            padding-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: var(--neon-yellow);
+            margin-bottom: 5px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            background-color: #262626;
+            color: var(--text-color);
+            border: var(--main-border);
+            box-sizing: border-box;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: var(--block-shadow), 0 0 10px var(--neon-cyan);
+        }
+
+        .member-list {
+            margin-top: 30px;
+            border-top: var(--main-border);
+            padding-top: 20px;
+        }
+
+        .member-input {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .member-name {
+            font-weight: bold;
+            text-transform: uppercase;
+            color: var(--text-color);
+            width: 40%;
+        }
+
+        .calc-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: var(--neon-pink);
+            color: #000000;
+            border: var(--main-border);
+            cursor: pointer;
+            box-shadow: var(--block-shadow);
+            margin-top: 30px;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .calc-btn:hover {
+            box-shadow: 4px 4px 0px #000000;
+            transform: translate(2px, 2px);
+        }
+
+        .calc-btn:active {
+            box-shadow: 0px 0px 0px #000000;
+            transform: translate(6px, 6px);
+        }
+
+        .result-box {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: var(--neon-cyan);
+            border: var(--main-border);
+            color: #000000;
+            box-shadow: -8px 8px 0px var(--neon-yellow);
+            display: none;
+        }
+
+        .result-title {
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #000000;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
 
-    <h2>แอปหารค่าเครื่องดื่ม ☕️🍵</h2>
-    
-    <p>ยอดรวมราคาเต็ม: <input type="number" id="fullTotal" value="275"> บาท</p>
-    <p>ยอดที่จ่ายจริง (หลังหักส่วนลด): <input type="number" id="paidTotal" value="195.94"> บาท</p>
+    <div class="container">
+        <h2 class="main-title">NEON SPLIT</h2>
+        
+        <div class="input-group">
+            <label>ยอดรวมราคาเต็ม (FULL TOTAL)</label>
+            <input type="number" id="fullTotal" value="275">
+        </div>
+        <div class="input-group">
+            <label>ยอดที่จ่ายจริง (PAID TOTAL)</label>
+            <input type="number" id="paidTotal" value="195.94">
+        </div>
 
-    <h3>ราคาเดิมของแต่ละคน</h3>
-    <p>หลุย: <input type="number" id="louis" value="65"> บาท</p>
-    <p>แทน: <input type="number" id="tan" value="70"> บาท</p>
-    <p>อ.อรอนงค์: <input type="number" id="onanong" value="60"> บาท</p>
-    <p>จอย: <input type="number" id="joy" value="80"> บาท</p>
+        <div class="member-list">
+            <label>ราคาเดิมของแต่ละคน</label>
+            
+            <div class="member-input">
+                <span class="member-name">หลุย</span>
+                <input type="number" id="louis" value="65">
+            </div>
+            
+            <div class="member-input">
+                <span class="member-name">แทน</span>
+                <input type="number" id="tan" value="70">
+            </div>
+            
+            <div class="member-input">
+                <span class="member-name">อ.อรอนงค์</span>
+                <input type="number" id="onanong" value="60">
+            </div>
+            
+            <div class="member-input">
+                <span class="member-name">จอย</span>
+                <input type="number" id="joy" value="80">
+            </div>
+        </div>
 
-    <button onclick="calculateAndSave()">คำนวณและบันทึกข้อมูล</button>
+        <button class="calc-btn" onclick="calculateAndSave()">คำนวณและบันทึกข้อมูล</button>
 
-    <div class="result-box" id="resultArea">
-        <i>ผลลัพธ์จะแสดงที่นี่...</i>
+        <div class="result-box" id="resultArea">
+            <h3 class="result-title">ยอดที่ต้องโอน</h3>
+            <div class="result-item"><span>หลุย:</span> <span id="resLouis">--</span></div>
+            <div class="result-item"><span>แทน:</span> <span id="resTan">--</span></div>
+            <div class="result-item"><span>อ.อรอนงค์:</span> <span id="resOnanong">--</span></div>
+            <div class="result-item"><span>จอย:</span> <span id="resJoy">--</span></div>
+        </div>
     </div>
 
     <script>
@@ -59,13 +231,11 @@
             let payOnanong = (onanong * ratio).toFixed(2);
             let payJoy = (joy * ratio).toFixed(2);
 
-            document.getElementById('resultArea').innerHTML = `
-                <b>ยอดที่ต้องโอนจริง:</b><br>
-                หลุย: ${payLouis} บาท<br>
-                แทน: ${payTan} บาท<br>
-                อ.อรอนงค์: ${payOnanong} บาท<br>
-                จอย: ${payJoy} บาท
-            `;
+            document.getElementById('resLouis').innerText = payLouis + " บาท";
+            document.getElementById('resTan').innerText = payTan + " บาท";
+            document.getElementById('resOnanong').innerText = payOnanong + " บาท";
+            document.getElementById('resJoy').innerText = payJoy + " บาท";
+            document.getElementById('resultArea').style.display = 'block';
 
             db.collection("bills").add({
                 date: new Date(),
@@ -78,7 +248,7 @@
                     joy: payJoy
                 }
             }).then(() => {
-                alert("🎉 คำนวณเสร็จและบันทึกข้อมูลลง Firebase เรียบร้อยแล้ว!");
+                alert("🎉 บันทึกข้อมูลลง NEON ฐานข้อมูลเรียบร้อยแล้ว!");
             }).catch((error) => {
                 alert("เกิดข้อผิดพลาดในการบันทึก: " + error);
             });
