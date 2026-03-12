@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>แอปหารค่าเครื่องดื่ม</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input { padding: 5px; margin: 5px 0; width: 100px; }
+        button { padding: 10px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; margin-top: 15px;}
+        .result-box { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <h2>แอปหารค่าเครื่องดื่ม ☕️🍵</h2>
+    
+    <p>ยอดรวมราคาเต็ม: <input type="number" id="fullTotal" value="275"> บาท</p>
+    <p>ยอดที่จ่ายจริง (หลังหักส่วนลด): <input type="number" id="paidTotal" value="195.94"> บาท</p>
+
+    <h3>ราคาเดิมของแต่ละคน</h3>
+    <p>หลุย: <input type="number" id="louis" value="65"> บาท</p>
+    <p>แทน: <input type="number" id="tan" value="70"> บาท</p>
+    <p>อ.อรอนงค์: <input type="number" id="onanong" value="60"> บาท</p>
+    <p>จอย: <input type="number" id="joy" value="80"> บาท</p>
+
+    <button onclick="calculateAndSave()">คำนวณและบันทึกข้อมูล</button>
+
+    <div class="result-box" id="resultArea">
+        <i>ผลลัพธ์จะแสดงที่นี่...</i>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyABBtb1sotLyV07u1_Kc6nHBfSW1wtxYo4",
+            authDomain: "splitbillapp-12032569.firebaseapp.com",
+            projectId: "splitbillapp-12032569",
+            storageBucket: "splitbillapp-12032569.firebasestorage.app",
+            messagingSenderId: "336134232669",
+            appId: "1:336134232669:web:b0505bd6b67291415e8bb4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function calculateAndSave() {
+            let full = parseFloat(document.getElementById('fullTotal').value);
+            let paid = parseFloat(document.getElementById('paidTotal').value);
+            let louis = parseFloat(document.getElementById('louis').value);
+            let tan = parseFloat(document.getElementById('tan').value);
+            let onanong = parseFloat(document.getElementById('onanong').value);
+            let joy = parseFloat(document.getElementById('joy').value);
+
+            let ratio = paid / full;
+            let payLouis = (louis * ratio).toFixed(2);
+            let payTan = (tan * ratio).toFixed(2);
+            let payOnanong = (onanong * ratio).toFixed(2);
+            let payJoy = (joy * ratio).toFixed(2);
+
+            document.getElementById('resultArea').innerHTML = `
+                <b>ยอดที่ต้องโอนจริง:</b><br>
+                หลุย: ${payLouis} บาท<br>
+                แทน: ${payTan} บาท<br>
+                อ.อรอนงค์: ${payOnanong} บาท<br>
+                จอย: ${payJoy} บาท
+            `;
+
+            db.collection("bills").add({
+                date: new Date(),
+                total_full: full,
+                total_paid: paid,
+                members: {
+                    louis: payLouis,
+                    tan: payTan,
+                    onanong: payOnanong,
+                    joy: payJoy
+                }
+            }).then(() => {
+                alert("🎉 คำนวณเสร็จและบันทึกข้อมูลลง Firebase เรียบร้อยแล้ว!");
+            }).catch((error) => {
+                alert("เกิดข้อผิดพลาดในการบันทึก: " + error);
+            });
+        }
+    </script>
+</body>
+</html>
