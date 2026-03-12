@@ -9,131 +9,177 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     
     <style>
+        /* --- Neo-Brutalism Playful Style --- */
         :root {
-            --bg-color: #0d0d0d;
-            --text-color: #ffffff;
-            --main-border: 3px solid #000000;
+            /* ปรับพื้นหลังหลักเป็นสีสว่าง */
+            --bg-color: #fffdf0; /* สีครีมสว่าง สบายตา */
+            --text-color: #000000;
+            --main-border: 4px solid #000000; /* ขอบหนาขึ้นเพื่อความดิบ */
+            
+            /* สีกล่องด้านใน ปรับเป็นสีดำสนิทเพื่อตัดกับพื้นหลังสว่าง */
+            --container-bg: #000000; 
+            --container-text: #ffffff;
+            
+            /* สี Neon กระแทกตา */
             --neon-pink: #ff00ff;
             --neon-cyan: #00ffff;
             --neon-yellow: #ffff00;
-            --neon-green: #0ff00;
-            --block-shadow: 6px 6px 0px #000000;
+            
+            /* เงาบล็อกหนาสะใจ */
+            --block-shadow: 8px 8px 0px #000000;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding: 30px;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- วอลเปเปอร์ลาย Emoji กวนๆ (อาหาร+เครื่องดื่ม) --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; /* อยู่หลังสุด */
+            opacity: 0.15; /* ทำให้จางๆ เป็นลายน้ำ */
+            /* สร้างลายซ้ำด้วย SVG data URI ของ Emoji */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ctext x='10' y='25' font-size='18'%3E🍕%3C/text%3E%3Ctext x='50' y='25' font-size='18'%3E🍺%3C/text%3E%3Ctext x='30' y='50' font-size='18'%3E🍷%3C/text%3E%3Ctext x='10' y='75' font-size='18'%3E🍔%3C/text%3E%3Ctext x='50' y='75' font-size='18'%3E🥃%3C/text%3E%3Ctext x='30' y='10' font-size='10'%3E🐔%3C/text%3E%3Ctext x='70' y='60' font-size='10'%3E🍻%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
         }
 
         .container {
             border: var(--main-border);
-            background-color: #1a1a1a;
-            padding: 40px;
+            background-color: var(--container-bg);
+            color: var(--container-text);
+            padding: 30px;
             width: 100%;
             max-width: 450px;
-            box-shadow: 10px 10px 0px var(--neon-pink);
+            box-shadow: 12px 12px 0px var(--neon-pink); /* เงาบล็อกนีออนเด่นๆ */
+            z-index: 10;
         }
 
         h2.main-title {
             text-transform: uppercase;
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             margin-top: 0;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: var(--neon-cyan);
-            text-shadow: 2px 2px 0 var(--neon-pink);
-            border-bottom: 3px solid var(--neon-cyan);
+            text-shadow: 3px 3px 0 var(--neon-pink);
+            border-bottom: 4px solid var(--neon-cyan);
             padding-bottom: 10px;
             letter-spacing: -1px;
+            text-align: center;
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--neon-yellow);
             margin-bottom: 5px;
         }
 
-        input[type="number"] {
+        input[type="number"], input[type="text"] {
             width: 100%;
             padding: 15px;
             font-size: 1.1rem;
-            background-color: #262626;
-            color: var(--text-color);
+            background-color: #222222; /* พื้นหลังช่องกรอกสีเทาเข้ม */
+            color: #ffffff;
             border: var(--main-border);
             box-sizing: border-box;
         }
 
-        input[type="number"]:focus {
+        input:focus {
             outline: none;
             border-color: var(--neon-cyan);
-            box-shadow: var(--block-shadow), 0 0 10px var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan);
         }
 
         .member-list {
-            margin-top: 30px;
+            margin-top: 25px;
             border-top: var(--main-border);
-            padding-top: 20px;
+            border-color: #333333; /* เส้นคั่นในกล่องดำ */
+            padding-top: 15px;
         }
 
-        .member-input {
+        .member-row {
             display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
         }
 
-        .member-name {
+        .member-row input[type="text"] { flex: 2; }
+        .member-row input[type="number"] { flex: 1.5; }
+        
+        /* ปุ่มลบคน */
+        .remove-btn {
+            background-color: #ff3333;
+            color: white;
+            border: 3px solid #000;
             font-weight: bold;
-            text-transform: uppercase;
-            color: var(--text-color);
-            width: 40%;
+            padding: 12px 18px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #000;
+            transition: transform 0.1s;
         }
+        .remove-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0px #000;}
 
+        /* ปุ่มเพิ่มคนสีเหลือง */
+        .add-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--neon-yellow);
+            color: #000;
+            border: var(--main-border);
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 5px;
+            box-shadow: 6px 6px 0px #000;
+            transition: transform 0.1s;
+        }
+        .add-btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px #000;}
+
+        /* ปุ่มคำนวณหลัก */
         .calc-btn {
             width: 100%;
             padding: 20px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             text-transform: uppercase;
             background-color: var(--neon-pink);
             color: #000000;
             border: var(--main-border);
             cursor: pointer;
-            box-shadow: var(--block-shadow);
-            margin-top: 30px;
-            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 8px 8px 0px #000000;
+            margin-top: 35px;
+            transition: transform 0.1s;
         }
-
-        .calc-btn:hover {
-            box-shadow: 4px 4px 0px #000000;
-            transform: translate(2px, 2px);
-        }
-
-        .calc-btn:active {
-            box-shadow: 0px 0px 0px #000000;
-            transform: translate(6px, 6px);
-        }
+        .calc-btn:active { transform: translate(6px, 6px); box-shadow: 0px 0px 0px #000; }
 
         .result-box {
-            margin-top: 40px;
+            margin-top: 35px;
             padding: 25px;
             background-color: var(--neon-cyan);
             border: var(--main-border);
             color: #000000;
-            box-shadow: -8px 8px 0px var(--neon-yellow);
+            box-shadow: -10px 10px 0px var(--neon-yellow); /* เงาบล็อกสีเหลืองเฉียงกลับ */
             display: none;
         }
 
@@ -141,18 +187,20 @@
             text-transform: uppercase;
             font-size: 1.5rem;
             margin-top: 0;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #000000;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #000000;
+            text-align: center;
         }
 
         .result-item {
             display: flex;
             justify-content: space-between;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
             font-weight: bold;
+            border-bottom: 1px dashed #000; /* เส้นคั่นประระหว่างคน */
+            padding-bottom: 5px;
         }
-
     </style>
 </head>
 <body>
@@ -162,49 +210,37 @@
         
         <div class="input-group">
             <label>ยอดรวมราคาเต็ม (FULL TOTAL)</label>
-            <input type="number" id="fullTotal" value="275">
+            <input type="number" id="fullTotal" placeholder="เช่น 275">
         </div>
         <div class="input-group">
             <label>ยอดที่จ่ายจริง (PAID TOTAL)</label>
-            <input type="number" id="paidTotal" value="195.94">
+            <input type="number" id="paidTotal" placeholder="เช่น 195.94">
         </div>
 
         <div class="member-list">
-            <label>ราคาเดิมของแต่ละคน</label>
+            <label>รายชื่อและราคาเครื่องดื่ม</label>
             
-            <div class="member-input">
-                <span class="member-name">หลุย</span>
-                <input type="number" id="louis" value="65">
+            <div id="membersContainer">
+                <div class="member-row" id="row_1">
+                    <input type="text" class="m-name" placeholder="ชื่อ">
+                    <input type="number" class="m-price" placeholder="ราคา">
+                    <button class="remove-btn" onclick="removeMember('row_1')">X</button>
+                </div>
             </div>
-            
-            <div class="member-input">
-                <span class="member-name">แทน</span>
-                <input type="number" id="tan" value="70">
-            </div>
-            
-            <div class="member-input">
-                <span class="member-name">อ.อรอนงค์</span>
-                <input type="number" id="onanong" value="60">
-            </div>
-            
-            <div class="member-input">
-                <span class="member-name">จอย</span>
-                <input type="number" id="joy" value="80">
-            </div>
+
+            <button class="add-btn" onclick="addMember()">+ เพิ่มคน</button>
         </div>
 
         <button class="calc-btn" onclick="calculateAndSave()">คำนวณและบันทึกข้อมูล</button>
 
         <div class="result-box" id="resultArea">
-            <h3 class="result-title">ยอดที่ต้องโอน</h3>
-            <div class="result-item"><span>หลุย:</span> <span id="resLouis">--</span></div>
-            <div class="result-item"><span>แทน:</span> <span id="resTan">--</span></div>
-            <div class="result-item"><span>อ.อรอนงค์:</span> <span id="resOnanong">--</span></div>
-            <div class="result-item"><span>จอย:</span> <span id="resJoy">--</span></div>
+            <h3 class="result-title">💰 ยอดที่ต้องโอน 💰</h3>
+            <div id="resultList"></div>
         </div>
     </div>
 
     <script>
+        // --- ⚠️ อย่าลืมนำ รหัส firebaseConfig ของคุณมาวางตรงนี้แทนนะครับ ---
         const firebaseConfig = {
             apiKey: "AIzaSyABBtb1sotLyV07u1_Kc6nHBfSW1wtxYo4",
             authDomain: "splitbillapp-12032569.firebaseapp.com",
@@ -217,41 +253,63 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // --- ระบบเพิ่ม/ลดคน (JS เดิม) ---
+        let rowCount = 1;
+
+        function addMember() {
+            rowCount++;
+            const container = document.getElementById('membersContainer');
+            const newRow = document.createElement('div');
+            newRow.className = 'member-row';
+            newRow.id = 'row_' + rowCount;
+            newRow.innerHTML = `
+                <input type="text" class="m-name" placeholder="ชื่อ">
+                <input type="number" class="m-price" placeholder="ราคา">
+                <button class="remove-btn" onclick="removeMember('row_${rowCount}')">X</button>
+            `;
+            container.appendChild(newRow);
+        }
+
+        function removeMember(rowId) {
+            document.getElementById(rowId).remove();
+        }
+
+        // --- ระบบคำนวณและบันทึก (JS เดิม) ---
         function calculateAndSave() {
-            let full = parseFloat(document.getElementById('fullTotal').value);
-            let paid = parseFloat(document.getElementById('paidTotal').value);
-            let louis = parseFloat(document.getElementById('louis').value);
-            let tan = parseFloat(document.getElementById('tan').value);
-            let onanong = parseFloat(document.getElementById('onanong').value);
-            let joy = parseFloat(document.getElementById('joy').value);
+            let full = parseFloat(document.getElementById('fullTotal').value) || 0;
+            let paid = parseFloat(document.getElementById('paidTotal').value) || 0;
+
+            if (full === 0 || paid === 0) { alert("กรุณากรอกยอดรวมให้ครบถ้วนครับ!"); return; }
 
             let ratio = paid / full;
-            let payLouis = (louis * ratio).toFixed(2);
-            let payTan = (tan * ratio).toFixed(2);
-            let payOnanong = (onanong * ratio).toFixed(2);
-            let payJoy = (joy * ratio).toFixed(2);
+            let resultHTML = '';
+            let dbMembersData = {};
 
-            document.getElementById('resLouis').innerText = payLouis + " บาท";
-            document.getElementById('resTan').innerText = payTan + " บาท";
-            document.getElementById('resOnanong').innerText = payOnanong + " บาท";
-            document.getElementById('resJoy').innerText = payJoy + " บาท";
+            const allRows = document.querySelectorAll('.member-row');
+            allRows.forEach(row => {
+                let name = row.querySelector('.m-name').value;
+                let price = parseFloat(row.querySelector('.m-price').value) || 0;
+                if (name.trim() === '') name = "ไม่ระบุชื่อ";
+                if (price > 0) {
+                    let payAmount = (price * ratio).toFixed(2);
+                    resultHTML += `<div class="result-item"><span>${name}:</span> <span>${payAmount} บาท</span></div>`;
+                    dbMembersData[name] = parseFloat(payAmount);
+                }
+            });
+
+            if (Object.keys(dbMembersData).length === 0) { alert("กรุณากรอกราคาเครื่องดื่มอย่างน้อย 1 คนครับ!"); return; }
+
+            document.getElementById('resultList').innerHTML = resultHTML;
             document.getElementById('resultArea').style.display = 'block';
 
             db.collection("bills").add({
                 date: new Date(),
                 total_full: full,
                 total_paid: paid,
-                members: {
-                    louis: payLouis,
-                    tan: payTan,
-                    onanong: payOnanong,
-                    joy: payJoy
-                }
+                members: dbMembersData
             }).then(() => {
-                alert("🎉 บันทึกข้อมูลลง NEON ฐานข้อมูลเรียบร้อยแล้ว!");
-            }).catch((error) => {
-                alert("เกิดข้อผิดพลาดในการบันทึก: " + error);
-            });
+                alert("🎉 คำนวณเสร็จและบันทึกข้อมูลเรียบร้อยแล้ว!");
+            }).catch((error) => { alert("เกิดข้อผิดพลาด: " + error); });
         }
     </script>
 </body>
