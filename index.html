@@ -7,163 +7,96 @@
     
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
-        /* --- Neo-Brutalism Playful Style --- */
         :root {
-            --bg-color: #fffdf0;
-            --text-color: #000000;
-            --main-border: 4px solid #000000;
-            --container-bg: #000000; 
-            --container-text: #ffffff;
-            --neon-pink: #ff00ff;
-            --neon-cyan: #00ffff;
-            --neon-yellow: #ffff00;
-            --block-shadow: 8px 8px 0px #000000;
+            --bg-color: #fffdf0; --text-color: #000000;
+            --main-border: 4px solid #000000; --container-bg: #000000; 
+            --container-text: #ffffff; --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff; --neon-yellow: #ffff00;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            position: relative;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; position: relative; overflow-x: hidden;
         }
 
         body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1; 
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
             opacity: 0.15; 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ctext x='10' y='25' font-size='18'%3E🍕%3C/text%3E%3Ctext x='50' y='25' font-size='18'%3E🍺%3C/text%3E%3Ctext x='30' y='50' font-size='18'%3E🍷%3C/text%3E%3Ctext x='10' y='75' font-size='18'%3E🍔%3C/text%3E%3Ctext x='50' y='75' font-size='18'%3E🥃%3C/text%3E%3Ctext x='30' y='10' font-size='10'%3E🐔%3C/text%3E%3Ctext x='70' y='60' font-size='10'%3E🍻%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ctext x='10' y='25' font-size='18'%3E🍕%3C/text%3E%3Ctext x='50' y='25' font-size='18'%3E🍺%3C/text%3E%3Ctext x='30' y='50' font-size='18'%3E🍷%3C/text%3E%3Ctext x='10' y='75' font-size='18'%3E🍔%3C/text%3E%3Ctext x='50' y='75' font-size='18'%3E🥃%3C/text%3E%3C/svg%3E");
         }
 
         .container {
-            border: var(--main-border);
-            background-color: var(--container-bg);
-            color: var(--container-text);
-            padding: 30px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 12px 12px 0px var(--neon-pink); 
-            z-index: 10;
+            border: var(--main-border); background-color: var(--container-bg); color: var(--container-text);
+            padding: 25px; width: 100%; max-width: 480px; box-shadow: 12px 12px 0px var(--neon-pink); z-index: 10;
         }
 
         h2.main-title {
-            text-transform: uppercase;
-            font-size: 2.3rem;
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: var(--neon-cyan);
-            text-shadow: 3px 3px 0 var(--neon-pink);
-            border-bottom: 4px solid var(--neon-cyan);
-            padding-bottom: 10px;
-            letter-spacing: -1px;
-            text-align: center;
+            text-transform: uppercase; font-size: 2.3rem; margin-top: 0; margin-bottom: 20px;
+            color: var(--neon-cyan); text-shadow: 3px 3px 0 var(--neon-pink);
+            border-bottom: 4px solid var(--neon-cyan); padding-bottom: 10px; text-align: center;
         }
 
         .input-group { margin-bottom: 15px; }
-
-        label {
-            display: block;
-            font-weight: bold;
-            font-size: 0.95rem;
-            color: var(--neon-yellow);
-            margin-bottom: 5px;
-        }
+        label { display: block; font-weight: bold; font-size: 0.95rem; color: var(--neon-yellow); margin-bottom: 5px; }
 
         input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.1rem;
-            background-color: #222222; 
-            color: #ffffff;
-            border: var(--main-border);
-            box-sizing: border-box;
+            width: 100%; padding: 12px; font-size: 1rem; background-color: #222222; 
+            color: #ffffff; border: var(--main-border); box-sizing: border-box;
         }
 
-        input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); }
+        input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+        
+        /* ช่องกรอกแบบพิเศษสำหรับสายป๋า */
+        .m-fixed { background-color: #3a1c3a !important; border-color: var(--neon-pink) !important; color: #ff99ff !important; }
+        .m-fixed::placeholder { color: #ff66ff; opacity: 0.7;}
 
-        .member-list { margin-top: 25px; border-top: var(--main-border); border-color: #333333; padding-top: 15px; }
-
-        .member-row { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
+        .member-list { margin-top: 20px; border-top: 2px dashed #444; padding-top: 15px; }
+        
+        /* จัดเรียง 3 ช่องให้อยู่ในบรรทัดเดียว */
+        .member-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
         .member-row input[type="text"] { flex: 2; }
-        .member-row input[type="number"] { flex: 1.5; }
+        .member-row input[type="number"] { flex: 1.5; padding: 10px;}
         
         .remove-btn {
-            background-color: #ff3333; color: white; border: 3px solid #000;
-            font-weight: bold; padding: 12px 18px; cursor: pointer;
-            box-shadow: 4px 4px 0px #000; transition: transform 0.1s;
+            background-color: #ff3333; color: white; border: 3px solid #000; font-weight: bold;
+            padding: 10px 15px; cursor: pointer; box-shadow: 3px 3px 0px #000; transition: transform 0.1s;
         }
-        .remove-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0px #000;}
+        .remove-btn:active { transform: translate(3px, 3px); box-shadow: 0px 0px 0px #000;}
 
         .add-btn {
-            width: 100%; padding: 15px; background-color: var(--neon-yellow); color: #000;
-            border: var(--main-border); font-weight: bold; font-size: 1.1rem;
-            cursor: pointer; margin-top: 5px; box-shadow: 6px 6px 0px #000; transition: transform 0.1s;
+            width: 100%; padding: 12px; background-color: var(--neon-yellow); color: #000;
+            border: var(--main-border); font-weight: bold; font-size: 1rem; cursor: pointer;
+            margin-top: 5px; box-shadow: 4px 4px 0px #000; transition: transform 0.1s;
         }
-        .add-btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px #000;}
+        .add-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px #000;}
 
         .calc-btn {
-            width: 100%; padding: 20px; font-size: 1.3rem; font-weight: bold;
-            background-color: var(--neon-pink); color: #000000; border: var(--main-border);
-            cursor: pointer; box-shadow: 8px 8px 0px #000000; margin-top: 35px; transition: transform 0.1s;
+            width: 100%; padding: 18px; font-size: 1.2rem; font-weight: bold; background-color: var(--neon-pink);
+            color: #000; border: var(--main-border); cursor: pointer; box-shadow: 6px 6px 0px #000;
+            margin-top: 25px; transition: transform 0.1s;
         }
         .calc-btn:active { transform: translate(6px, 6px); box-shadow: 0px 0px 0px #000; }
 
-        /* --- พื้นที่แสดงผล (บิลที่จะแคปรูป) --- */
-        #slipArea {
-            display: none; /* ซ่อนไว้ก่อน */
-            margin-top: 35px;
-        }
-
-        .receipt-box {
-            padding: 25px;
-            background-color: var(--neon-cyan);
-            border: var(--main-border);
-            color: #000000;
-            box-shadow: -10px 10px 0px var(--neon-yellow);
-        }
-
-        .receipt-title {
-            text-transform: uppercase; font-size: 1.5rem; margin-top: 0; margin-bottom: 15px;
-            border-bottom: 3px solid #000000; text-align: center; padding-bottom: 10px;
-        }
-
-        .summary-details {
-            background-color: rgba(255, 255, 255, 0.4);
-            padding: 15px; border: 2px solid #000; margin-bottom: 15px; font-weight: bold;
-        }
+        #slipArea { display: none; margin-top: 30px; }
+        .receipt-box { padding: 25px; background-color: var(--neon-cyan); border: var(--main-border); color: #000; box-shadow: -8px 8px 0px var(--neon-yellow); }
+        .receipt-title { font-size: 1.5rem; margin-top: 0; margin-bottom: 15px; border-bottom: 3px solid #000; text-align: center; padding-bottom: 10px; }
+        .summary-details { background-color: rgba(255, 255, 255, 0.4); padding: 15px; border: 2px solid #000; margin-bottom: 15px; font-weight: bold; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
 
-        .result-item {
-            display: flex; flex-direction: column;
-            margin-bottom: 15px; font-weight: bold;
-            border-bottom: 2px dashed #000; padding-bottom: 10px;
-        }
-        .item-name { font-size: 1.2rem; margin-bottom: 5px; text-transform: uppercase;}
-        .item-breakdown { display: flex; justify-content: space-between; font-size: 0.95rem; color: #333; }
+        .result-item { display: flex; flex-direction: column; margin-bottom: 15px; font-weight: bold; border-bottom: 2px dashed #000; padding-bottom: 10px; }
+        .item-name { font-size: 1.1rem; margin-bottom: 5px; text-transform: uppercase;}
+        .item-breakdown { display: flex; justify-content: space-between; font-size: 0.9rem; color: #333; }
         .item-final { display: flex; justify-content: space-between; font-size: 1.1rem; color: #000; margin-top: 5px; }
+        .sponsor-badge { background-color: var(--neon-pink); color: #fff; padding: 2px 6px; font-size: 0.8rem; border-radius: 4px; margin-left: 5px; border: 1px solid #000;}
 
-        /* ปุ่มดาวน์โหลด */
-        .download-btn {
-            width: 100%; padding: 15px; font-size: 1.1rem; font-weight: bold;
-            background-color: #ffffff; color: #000000; border: var(--main-border);
-            cursor: pointer; box-shadow: 6px 6px 0px #000000; margin-top: 20px; transition: transform 0.1s;
-        }
+        .download-btn { width: 100%; padding: 15px; font-size: 1.1rem; font-weight: bold; background-color: #ffffff; color: #000; border: var(--main-border); cursor: pointer; box-shadow: 4px 4px 0px #000; margin-top: 20px; transition: transform 0.1s; }
         .download-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px #000; }
-
+        
+        .note-text { font-size: 0.8rem; color: #aaa; text-align: center; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -181,12 +114,13 @@
         </div>
 
         <div class="member-list">
-            <label>รายชื่อและราคาเครื่องดื่ม</label>
-            
-            <div id="membersContainer">
+            <label>รายชื่อ / ราคาเดิม / จ่ายเหมา(ถ้ามี)</label>
+            <div class="note-text">*ช่องสีชมพู (จ่ายเหมา) ใส่เฉพาะคนที่ล็อคยอดจ่าย เช่น ป๋าเลี้ยงเศษ</div>
+            <div id="membersContainer" style="margin-top: 10px;">
                 <div class="member-row" id="row_1">
                     <input type="text" class="m-name" placeholder="ชื่อ">
-                    <input type="number" class="m-price" placeholder="ราคา">
+                    <input type="number" class="m-price" placeholder="ราคาเดิม">
+                    <input type="number" class="m-fixed" placeholder="เหมาจ่าย">
                     <button class="remove-btn" onclick="removeMember('row_1')">X</button>
                 </div>
             </div>
@@ -202,7 +136,7 @@
                 
                 <div class="summary-details">
                     <div class="summary-row"><span>ยอดสั่งรวม:</span> <span id="sumFull">0 บาท</span></div>
-                    <div class="summary-row" style="color: #d80000;"><span>ส่วนลด:</span> <span id="sumDiscount">0 บาท</span></div>
+                    <div class="summary-row" style="color: #d80000;"><span>ส่วนลดรวม:</span> <span id="sumDiscount">0 บาท</span></div>
                     <div class="summary-row" style="font-size: 1.2rem; border-top: 2px solid #000; padding-top: 5px; margin-top: 5px;">
                         <span>ยอดจ่ายจริง:</span> <span id="sumPaid">0 บาท</span>
                     </div>
@@ -239,15 +173,14 @@
             newRow.id = 'row_' + rowCount;
             newRow.innerHTML = `
                 <input type="text" class="m-name" placeholder="ชื่อ">
-                <input type="number" class="m-price" placeholder="ราคา">
+                <input type="number" class="m-price" placeholder="ราคาเดิม">
+                <input type="number" class="m-fixed" placeholder="เหมาจ่าย">
                 <button class="remove-btn" onclick="removeMember('row_${rowCount}')">X</button>
             `;
             container.appendChild(newRow);
         }
 
-        function removeMember(rowId) {
-            document.getElementById(rowId).remove();
-        }
+        function removeMember(rowId) { document.getElementById(rowId).remove(); }
 
         function calculateAndSave() {
             let full = parseFloat(document.getElementById('fullTotal').value) || 0;
@@ -255,65 +188,93 @@
 
             if (full === 0 || paid === 0) { alert("กรุณากรอกยอดรวมให้ครบถ้วนครับ!"); return; }
 
-            let discount = full - paid;
-            let ratio = paid / full;
-            let resultHTML = '';
-            let dbMembersData = {};
-
-            // อัปเดตข้อมูลสรุปยอดรวมบนสลิป
-            document.getElementById('sumFull').innerText = full.toFixed(2) + " บาท";
-            document.getElementById('sumDiscount').innerText = "-" + discount.toFixed(2) + " บาท";
-            document.getElementById('sumPaid').innerText = paid.toFixed(2) + " บาท";
+            // ตัวแปรสำหรับคัดแยกคนจ่ายเหมา และคนหารปกติ
+            let totalFixedPaid = 0;
+            let totalFixedOriginal = 0;
+            let normalMembers = [];
+            let fixedMembers = [];
 
             const allRows = document.querySelectorAll('.member-row');
             allRows.forEach(row => {
                 let name = row.querySelector('.m-name').value;
                 let price = parseFloat(row.querySelector('.m-price').value) || 0;
-                
+                let fixedAmount = parseFloat(row.querySelector('.m-fixed').value);
+
                 if (name.trim() === '') name = "ไม่ระบุชื่อ";
-                
-                if (price > 0) {
-                    let payAmount = (price * ratio).toFixed(2);
-                    
-                    // สร้าง HTML สำหรับแต่ละคนตามที่ขอ: ชื่อ / ยอดเดิม / ยอดที่ต้องจ่ายจริง
-                    resultHTML += `
-                        <div class="result-item">
-                            <div class="item-name">👉 ${name}</div>
-                            <div class="item-breakdown"><span>ราคาเดิม:</span> <span>${price.toFixed(2)} บ.</span></div>
-                            <div class="item-final"><span>🔥 จ่ายจริง:</span> <span>${payAmount} บ.</span></div>
-                        </div>
-                    `;
-                    dbMembersData[name] = parseFloat(payAmount);
+
+                // ถ้ากรอกราคาเดิม หรือ กรอกยอดเหมาจ่าย (อย่างใดอย่างหนึ่ง) ถึงจะนำมาคำนวณ
+                if (price > 0 || !isNaN(fixedAmount)) {
+                    if (!isNaN(fixedAmount) && fixedAmount >= 0) {
+                        // คนที่จ่ายเหมา/ป๋าเลี้ยง
+                        fixedMembers.push({ name, price, pay: fixedAmount });
+                        totalFixedPaid += fixedAmount;
+                        totalFixedOriginal += price; // ดึงยอดราคาเดิมของคนนี้ออกจากกองกลาง
+                    } else {
+                        // คนหารปกติ
+                        normalMembers.push({ name, price });
+                    }
                 }
             });
 
-            if (Object.keys(dbMembersData).length === 0) { alert("กรุณากรอกราคาเครื่องดื่มอย่างน้อย 1 คนครับ!"); return; }
+            // คำนวณยอดคงเหลือสำหรับคนหารปกติ
+            let remainingPaidToSplit = paid - totalFixedPaid;
+            let remainingFullToSplit = full - totalFixedOriginal;
 
+            if (remainingPaidToSplit < 0) {
+                alert("ยอดจ่ายเหมาเกินยอดที่จ่ายจริงไปแล้วครับ! ลองเช็คตัวเลขอีกครั้ง"); return;
+            }
+
+            // หาอัตราส่วนลดสำหรับคนที่เหลือ (ถ้ายอดเต็มที่เหลือหารได้)
+            let ratio = (remainingFullToSplit > 0) ? (remainingPaidToSplit / remainingFullToSplit) : 0;
+            
+            let resultHTML = '';
+            let dbMembersData = {};
+
+            // 1. สร้างบิลให้คนที่จ่ายเหมา (สายป๋า)
+            fixedMembers.forEach(m => {
+                resultHTML += `
+                    <div class="result-item">
+                        <div class="item-name">👉 ${m.name} <span class="sponsor-badge">จ่ายเหมา</span></div>
+                        <div class="item-breakdown"><span>ราคาเดิม:</span> <span>${m.price.toFixed(2)} บ.</span></div>
+                        <div class="item-final"><span>🔥 จ่ายจริง:</span> <span>${m.pay.toFixed(2)} บ.</span></div>
+                    </div>
+                `;
+                dbMembersData[m.name] = m.pay;
+            });
+
+            // 2. สร้างบิลให้คนหารปกติ (ได้ส่วนลดเพิ่มเติมจากสายป๋า)
+            normalMembers.forEach(m => {
+                let payAmount = (m.price * ratio).toFixed(2);
+                resultHTML += `
+                    <div class="result-item">
+                        <div class="item-name">👉 ${m.name}</div>
+                        <div class="item-breakdown"><span>ราคาเดิม:</span> <span>${m.price.toFixed(2)} บ.</span></div>
+                        <div class="item-final"><span>🔥 จ่ายจริง:</span> <span>${payAmount} บ.</span></div>
+                    </div>
+                `;
+                dbMembersData[m.name] = parseFloat(payAmount);
+            });
+
+            if (Object.keys(dbMembersData).length === 0) { alert("กรุณากรอกข้อมูลคนสั่งเครื่องดื่มอย่างน้อย 1 คนครับ!"); return; }
+
+            // อัปเดตสลิป
+            document.getElementById('sumFull').innerText = full.toFixed(2) + " บาท";
+            document.getElementById('sumDiscount').innerText = "-" + (full - paid).toFixed(2) + " บาท";
+            document.getElementById('sumPaid').innerText = paid.toFixed(2) + " บาท";
             document.getElementById('resultList').innerHTML = resultHTML;
             document.getElementById('slipArea').style.display = 'block';
 
-            // ส่งข้อมูลไปเก็บที่ Firebase
+            // บันทึก Firebase
             db.collection("bills").add({
-                date: new Date(),
-                total_full: full,
-                total_discount: discount,
-                total_paid: paid,
-                members: dbMembersData
+                date: new Date(), total_full: full, total_paid: paid, members: dbMembersData
             }).catch((error) => { console.error("Firebase Error: ", error); });
         }
 
-        // --- ฟังก์ชันดาวน์โหลดสลิปเป็นรูปภาพ ---
         function downloadSlip() {
-            const captureArea = document.getElementById('captureBox'); // เลือกเฉพาะกล่องใบเสร็จ
-            
-            // ใช้ html2canvas เพื่อถ่ายรูปกล่องนั้น
-            html2canvas(captureArea, {
-                backgroundColor: "#00ffff", // สีพื้นหลังเผื่อเหลือขอบ
-                scale: 2 // เพิ่มความละเอียดภาพ (คมชัดขึ้น 2 เท่า)
-            }).then(canvas => {
-                // สร้างลิงก์จำลองเพื่อทำการดาวน์โหลดไฟล์
+            const captureArea = document.getElementById('captureBox');
+            html2canvas(captureArea, { backgroundColor: "#00ffff", scale: 2 }).then(canvas => {
                 let link = document.createElement('a');
-                link.download = 'neon-split-receipt.png'; // ชื่อไฟล์ตอนเซฟ
+                link.download = 'neon-split-receipt.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
